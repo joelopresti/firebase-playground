@@ -1,6 +1,6 @@
 import theme from "./styles";
 import { useStyles } from "./styles";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   Button,
@@ -15,12 +15,23 @@ import CalendarView from "./components/CalendarView";
 import UtilityButtons from "./components/UtilityButtons";
 import ViewToggle from "./components/ViewToggle";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
-import firebase from "firebase";
+import { firestore } from "./firebase";
 
 function App() {
   const baseClass = useStyles();
   const [currentView, setCurrentView] = useState("list");
-  const firebaseApp = firebase.apps;
+  const [reminder, setReminder] = useState({});
+
+  useEffect(() => {
+    firestore
+      .collection("reminders")
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        console.log(new Date(data[0].deadline * 1000));
+        setReminder(data[0]);
+      });
+  }, []);
 
   function updateView() {
     currentView === "list"
@@ -36,9 +47,6 @@ function App() {
             <NotificationsActiveIcon fontSize="large" />
             Reminder
           </Typography>
-          <code>
-            <pre>{JSON.stringify(firebaseApp, null, 2)}</pre>
-          </code>
           <ViewToggle
             baseClass={baseClass}
             currentView={currentView}
@@ -46,7 +54,7 @@ function App() {
           />
           <UtilityButtons baseClass={baseClass} />
           {currentView === "list" ? (
-            <ListView baseClass={baseClass} />
+            <ListView baseClass={baseClass} reminder={reminder} />
           ) : (
             <CalendarView />
           )}

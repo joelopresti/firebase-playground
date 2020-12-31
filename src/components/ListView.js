@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import CalendarToday from "@material-ui/icons/CalendarToday";
 
-const ListView = ({ baseClass }) => {
+const ListView = ({ baseClass, reminder }) => {
   return (
     <List className={baseClass.list}>
       <ListItem button className={baseClass.ListItem}>
@@ -17,7 +17,10 @@ const ListView = ({ baseClass }) => {
             <CalendarToday />
           </Badge>
         </ListItemIcon>
-        <ListItemText primary="Vacation" secondary="July 20, 2014" />
+        <ListItemText
+          primary={reminder.title}
+          secondary={reminder.description}
+        />
       </ListItem>
       <ListItem button className={baseClass.ListItem}>
         <ListItemIcon>
