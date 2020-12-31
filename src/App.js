@@ -1,19 +1,10 @@
+import { useState, useEffect } from "react";
+import { Container, Grid, Typography } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./styles";
 import { useStyles } from "./styles";
-import { useState, useEffect } from "react";
-import {
-  Container,
-  Button,
-  ButtonGroup,
-  Grid,
-  Paper,
-  Typography,
-} from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/core/styles";
-import ListView from "./components/ListView";
-import CalendarView from "./components/CalendarView";
-import UtilityButtons from "./components/UtilityButtons";
-import ViewToggle from "./components/ViewToggle";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import { firestore } from "./firebase";
 
@@ -21,6 +12,7 @@ function App() {
   const baseClass = useStyles();
   const [currentView, setCurrentView] = useState("list");
   const [reminder, setReminder] = useState({});
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     firestore
@@ -39,6 +31,11 @@ function App() {
       : setCurrentView("list");
   }
 
+  function handleLogin(e) {
+    e.preventDefault();
+    setAuthenticated(!authenticated);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg" className={baseClass.root}>
@@ -47,16 +44,16 @@ function App() {
             <NotificationsActiveIcon fontSize="large" />
             Reminder
           </Typography>
-          <ViewToggle
-            baseClass={baseClass}
-            currentView={currentView}
-            updateView={updateView}
-          />
-          <UtilityButtons baseClass={baseClass} />
-          {currentView === "list" ? (
-            <ListView baseClass={baseClass} reminder={reminder} />
+          <Typography>{`User is Logged in: ${authenticated}`}</Typography>
+          {authenticated ? (
+            <Dashboard
+              baseClass={baseClass}
+              currentView={currentView}
+              updateView={updateView}
+              reminder={reminder}
+            />
           ) : (
-            <CalendarView />
+            <Login handleLogin={handleLogin} />
           )}
         </Grid>
       </Container>
