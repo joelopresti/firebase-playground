@@ -6,9 +6,6 @@ export const useStyles = makeStyles({
   root: {
     background: indigo[500],
     minHeight: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
     paddingTop: "25px",
     color: "white",
   },
