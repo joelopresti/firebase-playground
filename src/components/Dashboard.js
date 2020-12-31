@@ -4,7 +4,7 @@ import CalendarView from "./CalendarView";
 import UtilityButtons from "./UtilityButtons";
 import ViewToggle from "./ViewToggle";
 
-const Dashboard = ({ baseClass, currentView, updateView, reminder }) => {
+const Dashboard = ({ baseClass, currentView, updateView }) => {
   return (
     <>
       <ViewToggle
@@ -14,7 +14,7 @@ const Dashboard = ({ baseClass, currentView, updateView, reminder }) => {
       />
       <UtilityButtons baseClass={baseClass} />
       {currentView === "list" ? (
-        <ListView baseClass={baseClass} reminder={reminder} />
+        <ListView baseClass={baseClass} />
       ) : (
         <CalendarView />
       )}

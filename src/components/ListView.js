@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   List,
   ListItem,
@@ -7,37 +7,37 @@ import {
   Badge,
 } from "@material-ui/core";
 import CalendarToday from "@material-ui/icons/CalendarToday";
+import { firestore } from "../firebase";
 
-const ListView = ({ baseClass, reminder }) => {
+const ListView = ({ baseClass }) => {
+  const [reminders, setReminders] = useState([]);
+  useEffect(() => {
+    firestore
+      .collection("reminders")
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        console.log(data);
+        setReminders(data);
+      });
+  }, []);
   return (
     <List className={baseClass.list}>
-      <ListItem button className={baseClass.ListItem}>
-        <ListItemIcon>
-          <Badge badgeContent={4} color="secondary">
-            <CalendarToday />
-          </Badge>
-        </ListItemIcon>
-        <ListItemText
-          primary={reminder.title}
-          secondary={reminder.description}
-        />
-      </ListItem>
-      <ListItem button className={baseClass.ListItem}>
-        <ListItemIcon>
-          <Badge badgeContent={1} color="secondary">
-            <CalendarToday />
-          </Badge>
-        </ListItemIcon>
-        <ListItemText primary="Vacation" secondary="July 20, 2014" />
-      </ListItem>
-      <ListItem button className={baseClass.ListItem}>
-        <ListItemIcon>
-          <Badge badgeContent={2} color="secondary">
-            <CalendarToday />
-          </Badge>
-        </ListItemIcon>
-        <ListItemText primary="Vacation" secondary="July 20, 2014" />
-      </ListItem>
+      {reminders.map((reminder, index) => {
+        return (
+          <ListItem button className={baseClass.ListItem} key={index}>
+            <ListItemIcon>
+              <Badge badgeContent={4} color="secondary">
+                <CalendarToday />
+              </Badge>
+            </ListItemIcon>
+            <ListItemText
+              primary={reminder.title}
+              secondary={reminder.description}
+            />
+          </ListItem>
+        );
+      })}
     </List>
   );
 };
