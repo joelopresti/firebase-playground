@@ -19,6 +19,7 @@ const ReminderProvider = ({ children }) => {
         setReminder(data[0]);
       });
   }, []);
+
   return (
     <ReminderContext.Provider value={reminder}>
       {children}
