@@ -17,10 +17,9 @@ const ListView = ({ baseClass }) => {
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
-        console.log(data);
         setReminders(data);
       });
-  }, []);
+  }, [reminders]);
   return (
     <List className={baseClass.list}>
       {reminders.map((reminder, index) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,19 @@ import {
 } from "@material-ui/core";
 import { firestore } from "../firebase";
 
-const NewReminderDialog = ({ title, children, openDialog, handleClose }) => {
+const NewReminderDialog = ({ openDialog, handleClose }) => {
+  const [newReminder, setNewReminder] = useState({
+    categories: [],
+    deadline: Date.now(),
+    description: "",
+    title: "",
+  });
+
+  const handleChange = (evt) => {
+    const value = evt.target.value;
+    setNewReminder({ ...newReminder, [evt.target.name]: value });
+  };
+
   //TODO Include Formik and update state to handle form handling.
   const testData = {
     categories: ["test data"],
@@ -22,15 +34,27 @@ const NewReminderDialog = ({ title, children, openDialog, handleClose }) => {
       .add(testData)
       .then(function (docRef) {
         console.log("Document written with ID: ", docRef.id);
-      });
+      })
+      .then(handleClose);
   };
+
   return (
     <Dialog onClose={handleClose} open={openDialog}>
       <DialogTitle>Create New Reminder</DialogTitle>
       <DialogContent>
         <form>
-          <TextField variant="outlined" label="Title"></TextField>
-          <TextField variant="outlined" label="Description"></TextField>
+          <TextField
+            onChange={handleChange}
+            variant="outlined"
+            name="title"
+            label="Title"
+          ></TextField>
+          <TextField
+            onChange={handleChange}
+            variant="outlined"
+            name="description"
+            label="Description"
+          ></TextField>
           <Button variant="contained" color="primary" onClick={addNewReminder}>
             Submit
           </Button>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState } from "react";
 import { Container, Grid, Typography } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./styles";
@@ -6,7 +6,6 @@ import { useStyles } from "./styles";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
-import { useReminder } from "./components/ReminderContext";
 
 function App() {
   const baseClass = useStyles();
