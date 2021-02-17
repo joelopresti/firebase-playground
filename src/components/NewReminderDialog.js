@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogActions,
   DialogTitle,
   TextField,
   Button,
+  FormGroup,
+  Checkbox,
+  CheckboxIcon,
+  FormControlLabel,
 } from "@material-ui/core";
 import { firestore } from "../firebase";
 
@@ -31,7 +36,7 @@ const NewReminderDialog = ({ openDialog, handleClose }) => {
   const addNewReminder = () => {
     return firestore
       .collection("reminders")
-      .add(testData)
+      .add(newReminder)
       .then(function (docRef) {
         console.log("Document written with ID: ", docRef.id);
       })
@@ -55,11 +60,22 @@ const NewReminderDialog = ({ openDialog, handleClose }) => {
             name="description"
             label="Description"
           ></TextField>
-          <Button variant="contained" color="primary" onClick={addNewReminder}>
-            Submit
-          </Button>
+          <TextField
+            onChange={handleChange}
+            label="Deadline"
+            name="deadline"
+            type="date"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
         </form>
       </DialogContent>
+      <DialogActions>
+        <Button variant="contained" color="primary" onClick={addNewReminder}>
+          Submit
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };

@@ -20,13 +20,14 @@ const ListView = ({ baseClass }) => {
         setReminders(data);
       });
   }, [reminders]);
+  // https://github.com/csfrequency/react-firebase-hooks
   return (
     <List className={baseClass.list}>
       {reminders.map((reminder, index) => {
         return (
           <ListItem button className={baseClass.ListItem} key={index}>
             <ListItemIcon>
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={reminders.length} color="secondary">
                 <CalendarToday />
               </Badge>
             </ListItemIcon>
@@ -34,6 +35,7 @@ const ListView = ({ baseClass }) => {
               primary={reminder.title}
               secondary={reminder.description}
             />
+            <ListItemText primary={"Deadline"} secondary={reminder.deadline} />
           </ListItem>
         );
       })}
